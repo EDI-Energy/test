@@ -1,0 +1,194 @@
+openapi: '3.0.3'
+info:
+  title: Katalog API
+  version: '1.0'
+  description: Katalog API
+  contact:
+    name: "Andreas"
+    url: "https://www.predic8.de"
+    email: "maier@predic8.de"
+servers:
+  - url: https://api.server.test/v1
+tags:
+  - name: "Shop"
+paths:
+  /artikel:
+    get:
+      tags:
+        - Shop
+      summary: Gebe alle Artikel zurück
+      description: Liefert alle Artikel zurück
+      operationId: getArtikel
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Artikel'
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Artikel'
+      tags:
+        - Shop
+      summary: Füge einen Artikel hinzu
+      description: | 
+        # Fügt einen Artikel hinzu
+
+        ## Ein Artikel besteht aus:
+          - name
+          - preis
+        
+        
+        Inline-style: 
+        ![alt text](https://miro.medium.com/v2/resize:fit:606/1*9mhEcbqWgKRMGu47Jeh7mQ.png "Logo Title Text 1")
+
+        Colons can be used to align columns.
+
+        | Method        | Are           | Cool  |
+        | ------------- |:-------------:| -----:|
+        | PUT           | right-aligned | $1600 |
+        | POST          |   centered    |   $12 |
+        | DELETE        | centered      |   $12 |
+        | zebra stripes | are neat      |    $1 |
+
+
+
+
+      operationId: postArtikel
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:                
+                $ref: '#/components/schemas/Artikel'
+
+  /artikel/{aid}:
+    parameters:
+      - in: path
+        name: aid
+        schema:
+          type: string
+        required: true
+        description: Artikel ID
+        example: "123456678"
+    get:
+      tags:
+        - Shop
+      summary: Gebe einen Artikel zurück
+      description: Liefert einen Artikel zurück
+      operationId: getArtikelAid
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Artikel'
+    put:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Artikel'
+      tags:
+        - Shop
+      summary: Aktualisiere einen Artikel
+      description: Aktualisiere einen Artikel
+      operationId: putArtikelAid
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Artikel'
+    patch:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchArtikel'
+      tags:
+        - Shop
+      summary: Ändere den Wert eines Feldes
+      description: Ändert den Wert eines Feldes
+      operationId: patchArtikelAid
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Artikel'
+    delete:
+      tags:
+        - Shop
+      summary: Lösche einen Artikel
+      description: Lösche einen Artikel
+      operationId: deleteArtikelAid
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusMeldung'
+        '4XX':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusMeldung'
+
+
+components:
+  schemas:
+    Artikel:
+      properties:
+        name:
+          type: string
+          maxLength: 50
+          minLength: 3
+          description: Name des Artikels
+          example: Cherry
+        preis:
+          type: number
+          minimum: 0
+          description: Preis des Artikels
+          example: 3.99
+      required:
+        - name
+        - preis
+    PatchArtikel:
+      properties:
+        name:
+          type: string
+          maxLength: 50
+          minLength: 3
+          description: Name des Artikels
+          example: Cherry
+        preis:
+          type: number
+          minimum: 0
+          description: Preis des Artikels
+          example: 3.99
+    StatusMeldung:
+      properties:
+        nachricht:
+          type: string
+          maxLength: 1000
+          minLength: 3
+          description: Nachricht
+          example: Test
+        ApplicationCode:
+          type: integer
+          description: Status Code der Applikation
+          example: 2631234
+        
